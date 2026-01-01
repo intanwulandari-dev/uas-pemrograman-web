@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UAS - Intan Wulandari</title>
+    <style>
+        /* --- CSS: Tampilan & Desain --- */
+        :root {
+            --primary-color: #2563eb; /* Biru Modern */
+            --secondary-color: #1e40af;
+            --accent-color: #f59e0b;
+            --bg-color: #f3f4f6;
+            --text-color: #1f2937;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Container Utama */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            flex: 1; /* Agar footer selalu di bawah jika konten sedikit */
+        }
+
+        /* Grid System untuk Pertemuan */
+        .material-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Kartu Materi */
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .card-meeting {
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        .card-desc {
+            font-size: 0.95rem;
+            color: #6b7280;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-read {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .btn-read:hover {
+            background-color: var(--secondary-color);
+        }
+
+        /* Modal (Pop-up) */
+        .modal-overlay {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: white;
+            width: 100%;
+            max-width: 800px;
+            max-height: 90vh;
+            border-radius: 12px;
+            position: relative;
+            overflow-y: auto; /* Scroll jika konten panjang */
+            box-shadow: 0 20px 25px rgba(0,0,0,0.2);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            background: var(--bg-color);
+            padding: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #6b7280;
+            line-height: 1;
+        }
+
+        .close-btn:hover {
+            color: red;
+        }
+
+        .modal-body {
+            padding: 2rem;
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        .modal-body h3 {
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary-color);
+        }
+        
+        .modal-body ul {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: #1f2937;
+            color: #d1d5db;
+            margin-top: auto;
+            font-size: 0.9rem;
+            border-top: 4px solid var(--accent-color);
+        }
+        
+        footer strong {
+            color: white;
+        }
+
+        /* Responsiveness */
+        @media (max-width: 768px) {
+            header h1 { font-size: 2rem; }
+            .modal-content { width: 95%; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Digital Entrepreneurship</h1>
+        <p>Portal Materi Perkuliahan</p>
+    </header>
+
+    <div class="container">
+        <div class="material-grid" id="content-grid">
+            </div>
+    </div>
+
+    <div class="modal-overlay" id="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modal-title">Judul Materi</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Dibuat untuk memenuhi tugas UAS.</p>
+        <p>&copy; 2025 <strong>Intan Wulandari</strong>. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // DATA MATERI
+        const materials = [
+            {
+                meeting: "Pertemuan 1",
+                title: "Mindset Kewirausahaan Digital",
+                summary: "Pengenalan dasar tentang transisi dari bisnis konvensional ke digital.",
+                content: `
+                    <h3>Pengertian Digital Entrepreneurship</h3>
+                    <p>Digital entrepreneurship adalah fenomena yang muncul melalui pemanfaatan teknologi dan aset digital untuk mengubah model bisnis, menciptakan peluang baru, dan memberikan nilai tambah.</p>
+                    <h3>Pola Pikir Founder</h3>
+                    <ul>
+                        <li><strong>Growth Mindset:</strong> Percaya bahwa kemampuan dapat dikembangkan.</li>
+                        <li><strong>Resiliensi:</strong> Ketahanan terhadap kegagalan.</li>
+                        <li><strong>Customer Centric:</strong> Fokus pada solusi masalah pelanggan.</li>
+                    </ul>
+                `
+            },
+            {
+                meeting: "Pertemuan 2",
+                title: "Business Model Canvas (BMC)",
+                summary: "Memahami 9 elemen kunci dalam merancang model bisnis startup yang solid.",
+                content: `
+                    <h3>Apa itu BMC?</h3>
+                    <p>Business Model Canvas adalah kerangka kerja manajemen strategis untuk mendefinisikan dan mengkomunikasikan ide atau konsep bisnis dengan cepat dan mudah.</p>
+                    <h3>9 Blok Bangunan</h3>
+                    <ol>
+                        <li>Customer Segments (Siapa target pasar?)</li>
+                        <li>Value Propositions (Nilai apa yang ditawarkan?)</li>
+                        <li>Channels (Cara menjangkau pelanggan)</li>
+                        <li>Customer Relationships</li>
+                        <li>Revenue Streams</li>
+                        <li>Key Resources</li>
+                        <li>Key Activities</li>
+                        <li>Key Partnerships</li>
+                        <li>Cost Structure</li>
+                    </ol>
+                `
+            },
+            {
+                meeting: "Pertemuan 3",
+                title: "Riset Pasar & Validasi Ide",
+                summary: "Teknik mencari tahu kebutuhan pasar sebelum membuat produk.",
+                content: `
+                    <h3>Pentingnya Validasi</h3>
+                    <p>Banyak startup gagal karena membangun produk yang tidak dibutuhkan pasar. Validasi dilakukan untuk meminimalkan risiko tersebut.</p>
+                    <h3>Metode Riset</h3>
+                    <ul>
+                        <li>Wawancara calon pengguna (In-depth Interview).</li>
+                        <li>Survei online (Google Forms).</li>
+                        <li>Analisis kompetitor (SWOT Analysis).</li>
+                        <li>Membuat MVP (Minimum Viable Product).</li>
+                    </ul>
+                `
+            },
+            {
+                meeting: "Pertemuan 4",
+                title: "Digital Marketing Basics",
+                summary: "Strategi pemasaran menggunakan kanal digital: SEO, SEM, dan Social Media.",
+                content: `
+                    <h3>Jenis-jenis Digital Marketing</h3>
+                    <p>Pemasaran digital mencakup segala upaya pemasaran yang menggunakan perangkat elektronik atau internet.</p>
+                    <h3>Kanal Utama</h3>
+                    <ul>
+                        <li><strong>SEO (Search Engine Optimization):</strong> Optimasi organik agar website muncul di Google.</li>
+                        <li><strong>Social Media Marketing:</strong> Menggunakan Instagram, TikTok, LinkedIn untuk branding.</li>
+                        <li><strong>Content Marketing:</strong> Memberikan nilai edukasi kepada audiens.</li>
+                        <li><strong>Email Marketing:</strong> Pendekatan personal ke database pelanggan.</li>
+                    </ul>
+                `
+            },
+            {
+                meeting: "Pertemuan 5",
+                title: "E-Commerce & Marketplace",
+                summary: "Memilih platform jualan yang tepat dan manajemen toko online.",
+                content: `
+                    <h3>Marketplace vs Website Sendiri</h3>
+                    <p>Memahami perbedaan berjualan di "tanah orang" (Shopee, Tokopedia) dibandingkan membangun website toko online sendiri (Shopify, Woocommerce).</p>
+                    <h3>Optimasi Toko Online</h3>
+                    <ul>
+                        <li>Foto produk yang profesional.</li>
+                        <li>Deskripsi produk yang copywriting-nya menjual.</li>
+                        <li>Strategi harga dan promo bundling.</li>
+                        <li>Manajemen stok dan logistik.</li>
+                    </ul>
+                `
+            },
+            {
+                meeting: "Pertemuan 6",
+                title: "Finansial Startup",
+                summary: "Dasar laporan keuangan, arus kas (cashflow), dan cara menghitung profit.",
+                content: `
+                    <h3>Cashflow is King</h3>
+                    <p>Dalam bisnis digital tahap awal, arus kas seringkali lebih penting daripada profitabilitas di atas kertas.</p>
+                    <h3>Metrik Penting</h3>
+                    <ul>
+                        <li><strong>CAC (Customer Acquisition Cost):</strong> Biaya untuk mendapatkan 1 pelanggan.</li>
+                        <li><strong>LTV (Lifetime Value):</strong> Total keuntungan dari 1 pelanggan selama berlangganan.</li>
+                        <li><strong>Burn Rate:</strong> Kecepatan startup menghabiskan modal operasional.</li>
+                    </ul>
+                `
+            }
+        ];
+
+        // FUNGSI JAVASCRIPT
+        const gridContainer = document.getElementById('content-grid');
+
+        // 1. Render Kartu
+        function renderMaterials() {
+            gridContainer.innerHTML = ""; 
+            materials.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.onclick = () => openModal(index);
+                
+                card.innerHTML = `
+                    <div class="card-body">
+                        <span class="card-meeting">${item.meeting}</span>
+                        <h3 class="card-title">${item.title}</h3>
+                        <p class="card-desc">${item.summary}</p>
+                        <span class="btn-read">Baca Materi &rarr;</span>
+                    </div>
+                `;
+                gridContainer.appendChild(card);
+            });
+        }
+
+        // 2. Logika Modal
+        const modal = document.getElementById('modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalBody = document.getElementById('modal-body');
+
+        function openModal(index) {
+            const data = materials[index];
+            modalTitle.innerText = `${data.meeting}: ${data.title}`;
+            modalBody.innerHTML = data.content;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto'; 
+        }
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
+        });
+
+        renderMaterials();
+    </script>
+</body>
+</html>
