@@ -4,13 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UAS - Intan Wulandari | Digital Entrepreneurship</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <header>
-        <h1>Digital Entrepreneurship</h1>
-        <p>Portal Materi Perkuliahan</p>
+        <div class="header-content">
+            <span class="badge-subtitle">PORTAL MAHASISWA</span>
+            <h1>Digital Entrepreneurship</h1>
+            <p>Kumpulan materi perkuliahan dan sumber belajar untuk membangun bisnis digital.</p>
+        </div>
     </header>
 
     <div class="container">
@@ -20,8 +26,13 @@
     <div class="modal-overlay" id="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title" id="modal-title">Judul Materi</h2>
-                <button class="close-btn" onclick="closeModal()">&times;</button>
+                <div>
+                    <span class="modal-badge" id="modal-badge">Pertemuan X</span>
+                    <h2 class="modal-title" id="modal-title">Judul Materi</h2>
+                </div>
+                <button class="close-btn" onclick="closeModal()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
             </div>
             <div class="modal-body" id="modal-body">
                 </div>
@@ -29,8 +40,10 @@
     </div>
 
     <footer>
-        <p>Dibuat untuk memenuhi tugas UAS.</p>
-        <p>&copy; 2025 <strong>Intan Wulandari</strong>. All rights reserved.</p>
+        <div class="footer-content">
+            <p>&copy; 2025 <strong>Intan Wulandari</strong></p>
+            <p class="footer-note">Dibuat dengan ❤️ untuk UAS</p>
+        </div>
     </footer>
 
     <script src="script.js"></script>
